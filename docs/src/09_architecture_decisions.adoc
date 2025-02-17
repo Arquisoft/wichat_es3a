@@ -2,11 +2,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
 == Architecture Decisions
-<<<<<<< HEAD
 1.[TypeScript](https://github.com/Arquisoft/wichat_es3a/wiki/AD‐1)
-=======
-
->>>>>>> parent of c0935cb (Updates)
 
 ifdef::arc42help[]
 [role="arc42help"]
