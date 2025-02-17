@@ -29,6 +29,14 @@ endif::arc42help[]
 
 === Quality Tree
 
+|===
+|Quality|Description|Scenario
+| _Usability_ | _The application must be easy to learn to use by design._ | __
+| _Performance_ | _The application should have a waiting time of no more than 5 seconds between actions._ | __
+| _Persistence_ | _The system should prevent any possible lose of user information._ | __
+| _Integrity_ | _The system should grant confidentiality to the user's data._ | __
+|===
+
 ifdef::arc42help[]
 [role="arc42help"]
 ****
