@@ -2,7 +2,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
 == Architecture Decisions
-
+1.[TypeScript](https://github.com/Arquisoft/wichat_es3a/wiki/AD‐1)
 
 ifdef::arc42help[]
 [role="arc42help"]
