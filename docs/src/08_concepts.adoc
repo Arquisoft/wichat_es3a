@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-concepts]]
-== 8. Cross-cutting Concepts
+== Cross-cutting Concepts
 
 
 ifdef::arc42help[]
@@ -57,13 +57,13 @@ See https://docs.arc42.org/section-8/[Concepts] in the arc42 documentation.
 ****
 endif::arc42help[]
 
-=== 8.1. Domain Model
+=== Domain Model
 * **Users**: Represents the players, including data such as name, email, game statistics and answer history.  
 * **Questions and Answers**: Model that includes the image, statement, answer options (correct and incorrect), and the source (Wikidata).  
 * **Hints**: Data dynamically generated from a language model (LLM).  
 * **Game Sessions**: Records the users' sessions, including given answers, times, and results.  
 
-=== 8.2. User Experience concepts (UX)
+=== User Experience concepts (UX)
 The user interacts with the application through a user interface. In this interface, the user must either register or log in. Once the user has been identified, they can start a quiz or check their participation history.
 
 Regarding the quiz, the user will see a question on the screen along with a series of possible answers. When one of these answers is selected, the user will receive feedback based on whether the chosen answer is correct or not. Additionally, there will be a chat in the bottom left corner that will interact with the user to provide a series of hints.
