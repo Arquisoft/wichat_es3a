@@ -1,9 +1,9 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-solution-strategy]]
-== 4. Solution Strategy
+== Solution Strategy
 
-=== 4.1. Technological Decisions
+=== Technological Decisions
 For the development of the system, technologies have been selected to optimize performance, maintainability, and scalability of the project.
 
 * Programming Language: TypeScript
@@ -23,7 +23,7 @@ GitHub was selected for version control. It allows for efficient source code man
 ** *Wikidata:* Wikidata will be used to retrieve structured information about any given topic. The system will query Wikidata to gather relevant data, which will then be processed to dynamically generate questions. By using Wikidata as a data source, the system ensures that the information is accurate and up-to-date.
 ** *Gemini*: The Gemini API will be used to create an interactive chat feature that generates hints for a quiz game. This will enhance user engagement by providing intelligent clues based on the context of the questions.
 
-=== 4.2. Decisions on how to achieve key quality goals
+=== Decisions on how to achieve key quality goals
 To ensure the system meets high-quality standards, several decisions have been made regarding development, deployment, and maintainability:
 
 * *Performance:* The system will use a NoSQL database (MongoDB) to allow fast read and write operations.
