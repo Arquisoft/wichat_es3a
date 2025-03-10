@@ -25,17 +25,37 @@ function validateRequiredFields(req, requiredFields) {
     }
 }
 
+function validateFormatOfFields(username, password){
+  if(username.length < 3){
+    throw new Error(`Username must be at least 3 characters long`)
+  } 
+  if (password.length < 8){
+    throw new Error(`Password must be at least 8 characters long`)
+  }
+  if (!password.match(/[A-Z]/g)){
+    throw new Error(`Password must contain at least one lowercase letter`)
+  }
+  if (!password.match(/d/g)){
+    throw new Error(`Password must contain at least one digit`)
+  }
+  if (!password.match(/[!@#$%^&*]/g)){
+    throw new Error(`Password must contain at least one special character`)
+  }
+}
+
 app.post('/adduser', async (req, res) => {
     try {
         // Check if required fields are present in the request body
         validateRequiredFields(req, ['username', 'password']);
+
+        validateFormatOfFields(req.body.username, req.body.password)
 
         // Encrypt the password before saving it
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const newUser = new User({
             username: req.body.username,
-            password: hashedPassword,
+            password: hashedPassword
         });
 
         await newUser.save();
