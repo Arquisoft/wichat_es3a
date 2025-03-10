@@ -1,5 +1,6 @@
-//La totalidad de este codigo esta basado en el siguiente repositorio:
+//La totalidad de este codigo esta sacado del siguiente repositorio:
 //https://github.com/Arquisoft/wiq_es6b/blob/master/webapp/src/components/Game.js
+//Creditos al equipo correspondiente en su totalidad
 //Este codigo ha sido modificado para adaptarse a los requerimientos del proyecto
 //Eso incluye su traducción a TypeScript
 import React, { useState, useEffect } from 'react';
