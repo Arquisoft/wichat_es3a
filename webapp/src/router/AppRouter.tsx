@@ -37,6 +37,11 @@ const router = createBrowserRouter([
         path: "/logout",
         element: <Login />,
     }
+    ,
+    {
+        path: "/debug",
+        element: <Game totalQuestions={10} themes={{}} username={localStorage.getItem("username") || "usuario"} timeLimit={10}/>,
+    }
 ]);
 
 export default router;
