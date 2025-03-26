@@ -5,10 +5,20 @@ import { useNavigate } from "react-router-dom";
 const NavBar: React.FC = () => {
     const [openUserMenu, setOpenUserMenu] = useState(false);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const user : string = localStorage.getItem("username") || "Usuario";
+    const username : string = user === "Usuario" ? "Usuario" : user.slice(1, user.length-1);
 
     const handleUserMenu = () => setOpenUserMenu((prev) => !prev);
     const handleMenuClose = () => setOpenUserMenu(false);
+
+    const handleHistoric = () => {
+        navigate("/historic");
+    };
+
+    const handleMain = () => {
+        navigate("/main");
+    };
 
     const handleLogout = () => {
         handleMenuClose(); 
@@ -17,18 +27,21 @@ const NavBar: React.FC = () => {
         navigate("/logout"); 
     };
 
+    // @ts-ignore
     return (
         <AppBar position="static" sx={{ backgroundColor: "#1E293B", boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.15)" }}>
             <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingX: 2 }}>
                 
-                <Typography 
-                    variant="h6" 
+                <Typography
+                    variant="h6"
+                    onClick={handleMain}
                     sx={{ 
                         color: "white", 
                         fontWeight: "bold", 
                         letterSpacing: "1px",
                         cursor: "pointer",
                         transition: "color 0.3s ease-in-out",
+                        height: "100%",
                         "&:hover": { color: "#3B82F6" } 
                     }}
                 >
@@ -53,7 +66,7 @@ const NavBar: React.FC = () => {
                                 },
                             }}
                         >
-                            Usuario
+                            {username}
                         </Button>
                         <Menu
                             open={openUserMenu}
@@ -70,7 +83,7 @@ const NavBar: React.FC = () => {
                                 },
                             }}
                         >
-                            <MenuItem onClick={handleMenuClose} sx={{ color: "#FFFFFF", "&:hover": { backgroundColor: "#40474D" } }}>
+                            <MenuItem onClick={handleHistoric} sx={{ color: "#FFFFFF", "&:hover": { backgroundColor: "#40474D" } }}>
                                 Historial
                             </MenuItem>
                             <MenuItem onClick={handleMenuClose} sx={{ color: "#FFFFFF", "&:hover": { backgroundColor: "#40474D" } }}>

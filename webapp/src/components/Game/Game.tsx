@@ -58,6 +58,7 @@ const Game: React.FC<GameProps> = ({ username, totalQuestions, timeLimit, themes
     const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState<string>("");
+    const [guessed, setGuessed] = useState<boolean>(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -78,7 +79,8 @@ const Game: React.FC<GameProps> = ({ username, totalQuestions, timeLimit, themes
         const remaining = isPaused ? transitionTimer : timer;
         const minsR = Math.floor(remaining / 60);
         const secsR = remaining % 60;
-        const secsRStr = secsR < 10 ? '0' + secsR.toString() : secsR.toString();
+        var secsRStr = secsR < 10 ? '0' + secsR.toString() : secsR.toString();
+        secsRStr = secsRStr !== '00' ? secsRStr : '  ';
         return `${secsRStr}`;
     };
 
@@ -120,6 +122,7 @@ const handleAnswer = (isCorrect: boolean, selectedAnswer: string) => {
     setIsPaused(true); // Pausar el temporizador
     setSelectedAnswer(selectedAnswer);
     setIsCorrectAnswer(isCorrect);
+    setGuessed(true);
     if (isCorrect) {
         setScore(prevScore => prevScore + 1);
     }

@@ -55,7 +55,7 @@ const Historic: React.FC<HistoricProps> = ({username}) => {
             backgroundColor: "#F4F4F4"
         }}>
             <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
-                📊 Estadísticas de {username}
+                📊 Estadísticas de {username.slice(1, username.length-1)}
             </Typography>
             <Typography variant="body1"><b>Tiempo Jugado:</b>{stats.totalTimePlayed} segundos</Typography>
             <Typography variant="body1"><b>Partidas Jugadas:</b> {stats.gamesplayed}</Typography>

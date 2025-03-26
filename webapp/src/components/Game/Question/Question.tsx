@@ -61,16 +61,15 @@ const Question: React.FC<QuestionProps> = ({ question, onAnswer, isTransitioning
                         <Button
                             variant="contained"
                             color={
-                                selectedOption !== null
-                                    ? respuesta === question.correctAnswer
-                                        ? 'success'
-                                        : index === selectedOption
-                                            ? 'error'
-                                            : 'primary'
-                                    : 'primary'
+                                selectedOption !== null ?
+                                    respuesta === question.correctAnswer
+                                        ? 'success' : index === selectedOption
+                                            ? 'error' : 'primary' :
+                                    isTransitioning ? respuesta === question.correctAnswer ? 'success' : 'primary'
+                                        : 'primary'
                             }
                             onClick={() => handleButtonClick(respuesta, index)}
-                            disabled={isTransitioning}
+                            disabled={false}
                             sx={{
                                 margin: '8px',
                                 textTransform: 'none',
