@@ -87,13 +87,27 @@ app.get('/questions/:category', async (req, res) => {
         if (error.response) {
             console.error(`Gateway - Código de estado: ${error.response.status}`);
             console.error(`Gateway - Respuesta del servidor: `, error.response.data);
+            
+            // Si el servicio está generando preguntas (503), pasar ese estado al cliente
+            if (error.response.status === 503) {
+                return res.status(503).json({
+                    message: error.response.data.message || `Generando preguntas para ${req.params.category}, por favor intente nuevamente en unos momentos`
+                });
+            }
+            
+            res.status(error.response.status).json({
+                error: error.response.data.error || error.response.data.message || error.message || 'Error interno'
+            });
         } else if (error.request) {
             console.error(`Gateway - No se recibió respuesta del servidor`);
+            res.status(500).json({
+                error: 'No se recibió respuesta del servidor de preguntas'
+            });
+        } else {
+            res.status(500).json({
+                error: error.message || 'Error interno'
+            });
         }
-        
-        res.status(error?.response?.status || 500).json({
-            error: error?.response?.data?.error || error.message || 'Error interno'
-        });
     }
 });
 

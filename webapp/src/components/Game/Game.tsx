@@ -91,7 +91,7 @@ const Game: React.FC = () => {
         // Si el error es 503 (Service Unavailable), el servicio está generando preguntas
         if (axios.isAxiosError(error) && error.response && error.response.status === 503) {
           console.log("El servicio está generando preguntas, reintentando en 3 segundos...");
-          return false; // Debemos reintentar
+          return false; // Mas yos val reintentar
         }
         
         // Si es 404, no hay preguntas para esa categoría
