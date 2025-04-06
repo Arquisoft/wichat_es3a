@@ -129,9 +129,6 @@ const NavBar: React.FC = () => {
                             <MenuItem onClick={handleHistoric} sx={{ color: "#F7FFF7", "&:hover": {color: "#202A25", backgroundColor: "#EDC9FF" } }}>
                                 Historial
                             </MenuItem>
-                            <MenuItem onClick={handleMenuClose} sx={{ color: "#F7FFF7", "&:hover": {color: "#202A25", backgroundColor: "#EDC9FF" } }}>
-                                Cuenta
-                            </MenuItem>
                             <MenuItem 
                                 onClick={handleLogout} 
                                 sx={{ 

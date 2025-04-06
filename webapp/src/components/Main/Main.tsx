@@ -10,7 +10,20 @@ import MovieIcon from '@mui/icons-material/Movie';
 import PetsIcon from '@mui/icons-material/Pets';
 import PaletteIcon from '@mui/icons-material/Palette';
 
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h4: {
+      fontFamily: '"Press Start 2P", cursive',
+      fontSize: '2rem',
+      letterSpacing: '0.05em'
+    },
+    button: {
+      fontFamily: '"Press Start 2P", cursive',
+      fontSize: '1.1rem',
+    }
+  },
+});
 
 const Main = () => {
     const navigate = useNavigate();
@@ -24,7 +37,6 @@ const Main = () => {
 
     const [difficulty, setDifficulty] = useState<number>(1);
     const [selectedMode, setSelectedMode] = useState<string>("country");
-
     const isAuthenticated = !!localStorage.getItem("token");
 
     useEffect(() => {
@@ -32,27 +44,6 @@ const Main = () => {
             navigate("/login");
         }
     }, [isAuthenticated, navigate]);
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            const storedUsername = localStorage.getItem("username");
-            const username = storedUsername ? JSON.parse(storedUsername) : "";
-            try {
-                const response = await axios.get(`${apiEndpoint}/stats/${username}`);
-                setStats(response.data);
-            } catch (error) {
-                console.error("Error fetching stats, intentando crear ranking:", error);
-                try {
-                    const createResponse = await axios.post(`${apiEndpoint}/stats`, { username });
-                    setStats(createResponse.data);
-                } catch (createError) {
-                    console.error("Error creando ranking:", createError);
-                }
-            }
-        };
-
-        fetchStats();
-    }, []);
 
     const storedUsername = localStorage.getItem('username');
     const username = storedUsername ? JSON.parse(storedUsername) : "Jugador";
@@ -162,17 +153,65 @@ const Main = () => {
                     <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold", color: difficultyMap[difficulty].color, fontSize: "1rem" }}>
                         Dificultad: {difficultyMap[difficulty].label}
                     </Typography>
-                    <Slider
-                        value={difficulty}
-                        min={0}
-                        max={2}
-                        step={1}
-                        marks={[
-                            { value: 0, label: "Fácil" },
-                            { value: 1, label: "Medio" },
-                            { value: 2, label: "Difícil" },
-                        ]}
-                        onChange={(_, newValue) => setDifficulty(newValue as number)}
+
+                    <Box 
+                        sx={{ 
+                            width: "70%", // Reducido del 100% al 70%
+                            mx: "auto", 
+                            mb: 5,
+                            backgroundColor: '#F7FFF7', 
+                            borderRadius: "15px",
+                            padding: 3, // Reducido de 4 a 3
+                            boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.2)' // Sombra menos pronunciada
+                        }}
+                    >
+                        <Typography 
+                            variant="body1" 
+                            sx={{ 
+                                mb: 1.5, // Reducido de 2 a 1.5
+                                fontWeight: "bold", 
+                                color: difficultyMap[difficulty].color,
+                                fontFamily: '"Press Start 2P", cursive',
+                                fontSize: '0.85rem' // Reducido de 1rem a 0.85rem
+                            }}
+                        >
+                            Dificultad: {difficultyMap[difficulty].label}
+                        </Typography>
+                        <Slider
+                            value={difficulty}
+                            min={0}
+                            max={2}
+                            step={1}
+                            marks={[
+                                { value: 0, label: "Fácil" },
+                                { value: 1, label: "Medio" },
+                                { value: 2, label: "Difícil" },
+                            ]}
+                            onChange={(_, newValue) => setDifficulty(newValue as number)}
+                            sx={{
+                                color: difficultyMap[difficulty].color,
+                                height: 6, // Reducido de 8 a 6
+                                '& .MuiSlider-thumb': {
+                                    width: 20, // Reducido de 24 a 20
+                                    height: 20, // Reducido de 24 a 20
+                                },
+                                '& .MuiSlider-markLabel': {
+                                    fontFamily: '"Press Start 2P", cursive',
+                                    fontSize: '0.7rem', // Reducido de 0.8rem a 0.7rem
+                                    marginTop: '8px' // Reducido de 10px a 8px
+                                },
+                                '& .MuiSlider-rail': {
+                                    height: 6 // Reducido de 8 a 6
+                                },
+                                '& .MuiSlider-track': {
+                                    height: 6 // Reducido de 8 a 6
+                                }
+                            }}
+                        />
+                    </Box>
+
+                    <Button
+                        onClick={handleButtonClick}
                         sx={{
                             color: difficultyMap[difficulty].color,
                             '& .MuiSlider-markLabel': {

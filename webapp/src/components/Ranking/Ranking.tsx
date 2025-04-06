@@ -63,24 +63,24 @@ const Ranking: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         padding: "20px",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#202A25",
       }}
     >
       <Box sx={{ width: "100%", position: "absolute", top: 0, left: 0 }}>
         <NavBar />
       </Box>
 
-      <Typography variant="h4" sx={{ mt: 10, mb: 4, fontWeight: "bold" }}>
+      <Typography variant="h4" sx={{ mt: 10, mb: 4, fontWeight: "bold", color: '#F7FFF7' }}>
         🏆 Ranking Global
       </Typography>
 
-      <Paper elevation={4} sx={{ width: "90%", maxWidth: 600, p: 2, borderRadius: 3 }}>
+      <Paper elevation={4} sx={{ width: "90%", maxWidth: 600, p: 2, borderRadius: 3, backgroundColor: "#5f4bb6" }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><strong>Posición</strong></TableCell>
-              <TableCell><strong>Usuario</strong></TableCell>
-              <TableCell><strong>Puntuación</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Posición</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Usuario</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Puntuación</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -91,7 +91,7 @@ const Ranking: React.FC = () => {
                 <TableRow
                   key={entry.username}
                   sx={{
-                    backgroundColor: isCurrentUser ? "#E3F2FD" : "#FFFFFF",
+                    backgroundColor: isCurrentUser ? "#EDC9FF" : "#F7FFF7",
                     fontWeight: isCurrentUser ? "bold" : "normal"
                   }}
                 >
@@ -101,12 +101,29 @@ const Ranking: React.FC = () => {
                 </TableRow>
               );
             })}
-            
-            {/* Separador (solo si hay un salto) */}
-            {showContext && showDivider && (
-              <TableRow>
-                <TableCell colSpan={3} align="center">...</TableCell>
-              </TableRow>
+            {contextAroundUser.length > 0 && (
+              <>
+                <TableRow>
+                  <TableCell colSpan={3} align="center">...</TableCell>
+                </TableRow>
+                {contextAroundUser.map((entry, index) => {
+                  const globalIndex = contextStart + index;
+                  const isCurrentUser = entry.username === username;
+                  return (
+                    <TableRow
+                      key={entry.username}
+                      sx={{
+                        backgroundColor: isCurrentUser ? "#EDC9FF" : "#F7FFF7",
+                        fontWeight: isCurrentUser ? "bold" : "normal",
+                      }}
+                    >
+                      <TableCell>{globalIndex + 1}</TableCell>
+                      <TableCell>{entry.username}</TableCell>
+                      <TableCell>{entry.puntuation}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </>
             )}
             
             {/* Contexto alrededor del usuario */}
@@ -130,7 +147,7 @@ const Ranking: React.FC = () => {
             
             {/* Caso especial: solo hay un elemento en el ranking y es el usuario */}
             {ranking.length === 1 && (
-              <TableRow sx={{ backgroundColor: "#E3F2FD" }}>
+              <TableRow sx={{ backgroundColor: "#EDC9FF" }}>
                 <TableCell>1</TableCell>
                 <TableCell>{username}</TableCell>
                 <TableCell>{ranking[0].puntuation}</TableCell>

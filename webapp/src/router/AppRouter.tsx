@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     { path: "/game", element: <Game /> },
     { path: "/endGame", element: <EndGame /> },
     { path: "/logout", element: <Login /> },
-    { path: "/historic", element: <Historic username={localStorage.getItem("username") || "usuario"} /> },
+    { path: "/historic", element: <Historic /> },
     { path: "/ranking", element: <Ranking /> },
     { path: "/api", element: <Api /> },
 ]);

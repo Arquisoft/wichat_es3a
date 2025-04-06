@@ -381,6 +381,7 @@ const Game: React.FC = () => {
                 color="secondary" 
                 size="large" 
                 onClick={handleClueToggle}
+                sx = {{ color: '#202A25', backgroundColor: '#EDC9FF'}}
               >
                 {clueOpen ? "Cerrar Pista" : "Pedir Pista"}
               </Button>

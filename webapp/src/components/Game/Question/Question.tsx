@@ -46,7 +46,7 @@ const Question: React.FC<QuestionProps> = ({ question, onAnswer, isTransitioning
                         src={question.imageUrl} 
                         alt="Imagen" 
                         style={{ 
-                            width: '350px',
+                            width: '500px',
                             aspectRatio: '3/2',  
                             borderRadius: '8px', 
                             objectFit: 'cover',   

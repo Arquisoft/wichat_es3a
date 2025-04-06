@@ -104,24 +104,25 @@ const EndGame: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
         position: 'relative',
-        padding: '20px'
+        padding: '20px',
+        backgroundColor: '#202A25'
       }}
     >
       <Box sx={{ width: "100%", position: "absolute", top: 0, left: 0 }}>
         <NavBar />
       </Box>
-      <Typography variant="h4" gutterBottom sx={{ mt: 8 }}>
+      <Typography variant="h4" gutterBottom sx={{ mt: 8, color: '#F7FFF7'}}>
         ¡Juego Terminado!
       </Typography>
-      <Typography variant="h6" gutterBottom>
-        {username}, tu puntuación final es: {score} puntos.
+      <Typography variant="h6" gutterBottom sx = {{ color: '#F7FFF7'}}>
+        {username}, tu puntaje total es: {score} puntos.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body1" gutterBottom sx = {{ color: '#F7FFF7'}}>
         Respuestas correctas: {numCorrect} / {totalQuestions}
       </Typography>
-      <Paper sx={{ width: '90%', maxWidth: 600, mt: 3, p: 2 }}>
+      <Paper sx={{ width: '90%', maxWidth: 600, mt: 3, p: 2, backgroundColor: '#5f4bb6' }}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-          <Typography variant="h6">
+          <Typography variant="h6" sx = {{ color: '#F7FFF7'}}>
             Resumen de la partida
           </Typography>
           
@@ -139,7 +140,7 @@ const EndGame: React.FC = () => {
                   borderRadius: '2px'
                 }} 
               />
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx = {{ color: '#F7FFF7'}}>
                 Puntuación con penalización del 50% por uso de IA
               </Typography>
               <Tooltip title="Cuando se utiliza el chat de pistas, la puntuación de esa ronda se reduce a la mitad" arrow>
@@ -152,21 +153,21 @@ const EndGame: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><strong>Ronda</strong></TableCell>
-              <TableCell><strong>Resultado</strong></TableCell>
-              <TableCell><strong>Tiempo (s)</strong></TableCell>
-              <TableCell><strong>Puntos</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Ronda</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Resultado</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Tiempo (s)</strong></TableCell>
+              <TableCell sx = {{ color: '#F7FFF7'}}><strong>Puntos</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {roundResults.map((round) => (
               <TableRow key={round.round}>
-                <TableCell>Ronda {round.round}</TableCell>
-                <TableCell>{round.correct ? 'Acertada' : 'Fallada'}</TableCell>
-                <TableCell>{round.timeTaken}</TableCell>
+                <TableCell sx = {{ color: '#F7FFF7'}}>Ronda {round.round}</TableCell>
+                <TableCell sx = {{ color: '#F7FFF7'}}>{round.correct ? 'Acertada' : 'Fallada'}</TableCell>
+                <TableCell sx = {{ color: '#F7FFF7'}}>{round.timeTaken}</TableCell>
                 <TableCell 
                   sx={{ 
-                    color: round.usedClue ? 'warning.main' : 'inherit',
+                    color: round.usedClue ? 'warning.main' : '#F7FFF7',
                     fontWeight: round.usedClue ? 'bold' : 'inherit'
                   }}
                 >
