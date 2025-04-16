@@ -9,6 +9,7 @@ interface QuestionProps {
 }
 
 interface Question {
+    _id: string;
     question: string;
     options: string[];
     correctAnswer: string;

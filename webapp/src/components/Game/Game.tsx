@@ -16,6 +16,7 @@ import LLMChat from './LLMChat';
 import PauseIcon from '@mui/icons-material/Pause'; 
 
 interface Question {
+  _id: string; // Added _id property to match the required type
   question: string;
   options: string[];
   correctAnswer: string;
@@ -63,69 +64,45 @@ const Game: React.FC = () => {
   const [transitionTimer, setTransitionTimer] = useState<number>(0);
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [nextQuestion, setNextQuestion] = useState<Question | null>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [roundResults, setRoundResults] = useState<RoundResult[]>([]);
   const [guessed, setGuessed] = useState<boolean>(false);
   const [isPauseIconVisible, setIsPauseIconVisible] = useState<boolean>(true);
   const [clueUsed, setClueUsed] = useState<boolean>(false); // Nuevo estado para rastrear si se usó una pista
   const [showScoreAlert, setShowScoreAlert] = useState<boolean>(false); // Para mostrar alerta cuando se usa una pista
+  
 
   const apiEndpoint: string = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-  const fetchQuestion = async () => {
-    let attempts = 0;
-    const maxAttempts = 5; // Aumentamos los intentos para dar más tiempo
-    
-    const tryFetchQuestion = async () => {
-      try {
-        const gameMode = location.state?.gameMode || "country";
-        console.log(`Intento ${attempts+1}: Obtener pregunta para modo: ${gameMode}`);
-        
-        const response = await axios.get(`${apiEndpoint}/questions/${gameMode}`);
-        setCurrentQuestion(response.data);
-        console.log("Pregunta obtenida correctamente:", response.data);
-        return true;
-      } catch (error) {
-        console.error(`Intento ${attempts+1} fallido:`, error);
-        
-        // Si el error es 503 (Service Unavailable), el servicio está generando preguntas
-        if (axios.isAxiosError(error) && error.response && error.response.status === 503) {
-          console.log("El servicio está generando preguntas, reintentando en 3 segundos...");
-          return false; // Debemos reintentar
-        }
-        
-        // Si es 404, no hay preguntas para esa categoría
-        if (axios.isAxiosError(error) && error.response && error.response.status === 404) {
-          console.error(`No hay preguntas disponibles para la categoría: ${location.state?.gameMode}`);
-          return false; // Reintentar, quizás se estén generando
-        }
-        
-        return false; // Cualquier otro error, reintentamos
-      }
-    };
-    
-    setIsLoading(true);
-    setFetchError(false);
-    
-    while (attempts < maxAttempts) {
-      const success = await tryFetchQuestion();
-      if (success) {
-        setIsLoading(false);
-        return;
-      }
-      
-      attempts++;
-      if (attempts < maxAttempts) {
-        // Esperar 3 segundos antes de reintentar
-        await new Promise(resolve => setTimeout(resolve, 3000));
-      }
-    }
-    
-    // Si llegamos aquí, es que fallaron todos los intentos
-    setIsLoading(false);
-    setFetchError(true);
-    setErrorMessage(`No se pudieron cargar preguntas para ${location.state?.gameMode || "esta categoría"}.`);
+  const preloadImage = (src: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve();
+      img.onerror = () => reject();
+    });
   };
+
+  const fetchQuestion = async (): Promise<Question | null> => {
+    try{
+      const gameMode = location.state?.gameMode || "country";
+      console.log("petición de preguntas");
+      const response = await axios.get(`${apiEndpoint}/questions/${gameMode}`);
+      const question = response.data;
+
+      if (question! && question.imageUrl){
+        await preloadImage(question.imageUrl);
+      }
+      return question;
+    } catch (error) {
+      console.error("Error fetching question:", error);
+      setFetchError(true);
+      setIsLoading(false);
+      setErrorMessage("No se pudieron cargar preguntas para esta categoría.");
+      return null;
+    }
+  }
   
   const handleTimeRemaining = (): string => {
     const remaining = isPaused ? transitionTimer : timer;
@@ -156,8 +133,24 @@ const Game: React.FC = () => {
   };
 
   const handleNextRound = async (answeredCorrectly: boolean) => {
+    let upcomingQuestion: Question | null;
     const currentTimer = timer;
     const roundTimeTaken = timeLimitFixed - currentTimer;
+
+    if (currentQuestion?._id === nextQuestion?._id) {
+      let next = await fetchQuestion();
+      upcomingQuestion = next;
+    } else{
+      if (nextQuestion) {
+        upcomingQuestion = nextQuestion;
+      } else {
+        setIsLoading(true);
+        upcomingQuestion = await fetchQuestion();
+        setIsLoading(false);
+      }
+    }
+  
+    fetchQuestion().then(setNextQuestion);
 
     let multiplier = 1;
     if (timeLimitFixed === 20) multiplier = 1.5;
@@ -219,7 +212,7 @@ const Game: React.FC = () => {
           setRound(prev => prev + 1);
           setTimer(timeLimitFixed);
           setIsPaused(false);
-          fetchQuestion();
+          setCurrentQuestion(upcomingQuestion);
         } else {
           setFinished(true);
         }
@@ -250,18 +243,16 @@ const Game: React.FC = () => {
   };
 
   useEffect(() => {
-    setFetchError(false); // Reiniciamos el estado de error
-    fetchQuestion();
-    
-    // Función para reintentar obtener pregunta si falló
-    const retryTimer = setTimeout(() => {
-      if (isLoading && !currentQuestion) {
-        console.log("Reintentando obtener pregunta después de tiempo de espera...");
-        fetchQuestion();
-      }
-    }, 8000); // Reintentar después de 8 segundos si sigue cargando
-    
-    return () => clearTimeout(retryTimer);
+    const setupInitialQuestions = async () => {
+      setIsLoading(true);
+      const first = await fetchQuestion();
+      const second = await fetchQuestion();
+      if (first) setCurrentQuestion(first);
+      if (second) setNextQuestion(second);
+      setIsLoading(false);
+    };
+  
+    setupInitialQuestions();
   }, []);
 
   // Efecto para manejar la intermitencia del icono de pausa

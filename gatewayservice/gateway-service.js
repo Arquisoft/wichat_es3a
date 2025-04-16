@@ -97,6 +97,16 @@ app.get('/questions/:category', async (req, res) => {
     }
 });
 
+app.post('/initializeQuestionsDB', async (req, res) => {
+    try{
+        console.log(`Gateway - Inicializando la base de datos de preguntas`);
+        await axios.post(`${questionServiceUrl}/initializeQuestionsDB`, req.body);
+        res.status(200).json({ message: 'Preguntas inicializadas correctamente' });
+    } catch(error){
+        console.error(`Gateway - Error al inicializar la base de datos de preguntas:`, error.message);
+    }
+});
+
 // Login endpoint
 app.post('/login', async (req, res) => {
   try {

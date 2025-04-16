@@ -11,22 +11,42 @@ module.exports = {
     
     getNumberQuestionsByCategory: async function(category){
         try{
+
             const numberQuestions = await Question.countDocuments({category: category});
             return numberQuestions;
-        } catch (error) {
-            console.error('Error al obtener número de preguntas:', error.message);
-            throw new Error(`Error al obtener número de preguntas: ${error.message}`);
+
+        }catch (error) {
+            res.status(500).json({ error: error.message });
+
         }
+
     },
-    
+
     saveQuestion: async function(question){
         try{
+
             const newQuestion = new Question(question);
             await newQuestion.save();
-            return newQuestion;
+
+        }catch (error) {
+            res.status(500).json({ error: error.message });
+
+        }
+    },
+
+    getExistingImages: async function(category){
+        const questions = await QuestionModel.find({ category }, { imageUrl: 1 });
+        const urls = new Set(questions.map(q => q.imageUrl));
+        return { urls };
+    },
+    saveQuestionsBatch: async function (questions) {
+        if (!Array.isArray(questions) || questions.length === 0) return;
+      
+        try {
+          await Question.insertMany(questions); // usando Mongoose, por ejemplo
+          console.log(`${questions.length} preguntas guardadas`);
         } catch (error) {
-            console.error('Error al guardar pregunta:', error.message);
-            throw new Error(`Error al guardar pregunta: ${error.message}`);
+          console.error("Error guardando preguntas en lote:", error.message);
         }
     },
 
@@ -56,26 +76,6 @@ module.exports = {
         } catch (error) {
             console.error("Error fetching random question:", error);
             throw new Error(error.message);
-        }
-    },
-
-    getTotalQuestions: async function() {
-        try {
-            const count = await Question.countDocuments({});
-            return count;
-        } catch (error) {
-            console.error('Error obteniendo número total de preguntas:', error.message);
-            throw new Error(`Error al obtener número total de preguntas: ${error.message}`);
-        }
-    },
-    
-    getQuestionsByCategory: async function(category) {
-        try {
-            const questions = await Question.find({ category }, { __v: 0 });
-            return questions;
-        } catch (error) {
-            console.error(`Error obteniendo preguntas para categoría ${category}:`, error.message);
-            throw new Error(`Error al obtener preguntas: ${error.message}`);
         }
     },
     

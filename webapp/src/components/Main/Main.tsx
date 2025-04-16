@@ -85,6 +85,12 @@ const Main = () => {
     };
 
     const navigateToGameMode = (mode: string) => {
+        if (mode == "question"){
+            axios.post(`${apiEndpoint}/initializeQuestionsDB`, 
+                {
+                    categories: ["country"]
+                });
+        }
         navigate(`/main/${mode}`);
     };
 
